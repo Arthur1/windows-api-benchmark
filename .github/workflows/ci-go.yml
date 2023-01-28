@@ -1,0 +1,23 @@
+name: ci-go
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        runs-on:
+          - windows-2022
+          - windows-2019
+    runs-on: ${{ matrix.runs-on }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version-file: ./go.mod
+      - name: run test
+        run: go test ./... -bench .
